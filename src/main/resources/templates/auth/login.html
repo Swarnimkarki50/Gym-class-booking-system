@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<main class="main auth-shell">
+    <a class="brand" th:href="@{/}">FitReserve</a>
+    <section class="panel">
+        <p class="eyebrow">Welcome back</p>
+        <h1>Login</h1>
+        <div class="alert success" th:if="${success}" th:text="${success}"></div>
+        <div class="alert error" th:if="${param.error}">Invalid email or password.</div>
+        <div class="alert success" th:if="${param.logout}">You have been logged out.</div>
+        <form class="form-grid" th:action="@{/login}" method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <label>
+                Email
+                <input class="form-control" type="email" name="email" required>
+            </label>
+            <label>
+                Password
+                <input class="form-control" type="password" name="password" required>
+            </label>
+            <button type="submit">Login</button>
+        </form>
+        <p class="meta">New member? <a th:href="@{/register}">Create an account</a></p>
+        <p class="meta">Demo admin: admin@gym.com / admin123<br>Demo user: user@gym.com / user123</p>
+    </section>
+</main>
+</body>
+</html>

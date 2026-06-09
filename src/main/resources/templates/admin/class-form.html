@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${formTitle}">Class Form</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<header class="topbar">
+    <nav class="nav">
+        <a class="brand" th:href="@{/}">FitReserve</a>
+        <div class="nav-links">
+            <a th:href="@{/classes}">Classes</a>
+            <a th:href="@{/admin/classes}">Admin</a>
+        </div>
+    </nav>
+</header>
+<main class="main">
+    <section class="panel">
+        <p class="eyebrow">Admin form</p>
+        <h1 th:text="${formTitle}">Class Form</h1>
+        <form class="form-grid" th:action="@{/admin/classes}" th:object="${gymClass}" method="post" enctype="multipart/form-data">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <input type="hidden" th:field="*{id}">
+            <input type="hidden" th:field="*{imagePath}">
+            <div class="two-col">
+                <label>
+                    Class Name
+                    <input class="form-control" th:field="*{name}" required>
+                    <span class="error-text" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+                </label>
+                <label>
+                    Instructor
+                    <input class="form-control" th:field="*{instructor}" required>
+                    <span class="error-text" th:if="${#fields.hasErrors('instructor')}" th:errors="*{instructor}"></span>
+                </label>
+            </div>
+            <div class="two-col">
+                <label>
+                    Category
+                    <input class="form-control" th:field="*{category}" placeholder="Yoga, HIIT, Strength, Cycling" required>
+                    <span class="error-text" th:if="${#fields.hasErrors('category')}" th:errors="*{category}"></span>
+                </label>
+                <label>
+                    Capacity
+                    <input class="form-control" type="number" min="1" th:field="*{capacity}" required>
+                    <span class="error-text" th:if="${#fields.hasErrors('capacity')}" th:errors="*{capacity}"></span>
+                </label>
+            </div>
+            <div class="two-col">
+                <label>
+                    Starts At
+                    <input class="form-control" type="datetime-local" th:field="*{startsAt}" required>
+                    <span class="error-text" th:if="${#fields.hasErrors('startsAt')}" th:errors="*{startsAt}"></span>
+                </label>
+                <label>
+                    Duration Minutes
+                    <input class="form-control" type="number" min="15" th:field="*{durationMinutes}" required>
+                    <span class="error-text" th:if="${#fields.hasErrors('durationMinutes')}" th:errors="*{durationMinutes}"></span>
+                </label>
+            </div>
+            <label>
+                Price
+                <input class="form-control" type="number" min="0" step="0.01" th:field="*{price}" required>
+                <span class="error-text" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></span>
+            </label>
+            <label>
+                Description
+                <textarea class="form-control" th:field="*{description}" required></textarea>
+                <span class="error-text" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
+            </label>
+            <label>
+                Class Image
+                <input class="form-control" type="file" name="imageFile" accept="image/*">
+            </label>
+            <label>
+                <span>
+                    <input type="checkbox" th:field="*{active}">
+                    Active and visible to members
+                </span>
+            </label>
+            <div class="actions">
+                <button type="submit">Save Class</button>
+                <a class="button secondary" th:href="@{/admin/classes}">Cancel</a>
+            </div>
+        </form>
+    </section>
+</main>
+</body>
+</html>

@@ -1,0 +1,33 @@
+services:
+  - type: web
+    name: gym-class-booking-system
+    runtime: docker
+    plan: free
+    envVars:
+      - key: DB_HOST
+        fromDatabase:
+          name: gym-class-booking-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: gym-class-booking-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: gym-class-booking-db
+          property: database
+      - key: DB_USERNAME
+        fromDatabase:
+          name: gym-class-booking-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: gym-class-booking-db
+          property: password
+      - key: JPA_DDL_AUTO
+        value: update
+      - key: SEED_DATA
+        value: true
+databases:
+  - name: gym-class-booking-db
+    plan: free

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Classes</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<header class="topbar">
+    <nav class="nav">
+        <a class="brand" th:href="@{/}">FitReserve</a>
+        <div class="nav-links">
+            <a th:href="@{/classes}">Classes</a>
+            <a th:href="@{/bookings}">My Bookings</a>
+            <a th:href="@{/admin/classes}">Admin</a>
+            <form th:action="@{/logout}" method="post">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                <button type="submit" class="button secondary">Logout</button>
+            </form>
+        </div>
+    </nav>
+</header>
+<main class="main">
+    <div class="section-head">
+        <div>
+            <p class="eyebrow">Admin dashboard</p>
+            <h1>Gym Class Management</h1>
+            <p class="meta">Create, read, update, delete, hide, and upload images for class records.</p>
+        </div>
+        <a class="button" th:href="@{/admin/classes/new}">Add Class</a>
+    </div>
+    <div class="alert success" th:if="${success}" th:text="${success}"></div>
+    <div class="table-wrap">
+        <table>
+            <thead>
+            <tr>
+                <th>Class</th>
+                <th>Instructor</th>
+                <th>Category</th>
+                <th>Schedule</th>
+                <th>Price</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="gymClass : ${classes}">
+                <td>
+                    <strong th:text="${gymClass.name}">Class</strong>
+                    <div class="meta" th:text="${gymClass.capacity + ' seats / ' + gymClass.durationMinutes + ' min'}">Seats</div>
+                </td>
+                <td th:text="${gymClass.instructor}">Instructor</td>
+                <td th:text="${gymClass.category}">Category</td>
+                <td th:text="${#temporals.format(gymClass.startsAt, 'MMM dd, yyyy HH:mm')}">Schedule</td>
+                <td th:text="${'$' + gymClass.price}">$18</td>
+                <td>
+                    <span class="status" th:classappend="${gymClass.active ? 'available' : 'hidden'}"
+                          th:text="${gymClass.active ? 'Active' : 'Hidden'}"></span>
+                </td>
+                <td>
+                    <div class="actions">
+                        <a class="button secondary" th:href="@{/admin/classes/{id}/edit(id=${gymClass.id})}">Edit</a>
+                        <form th:action="@{/admin/classes/{id}/delete(id=${gymClass.id})}" method="post">
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                            <button class="danger" type="submit">Delete</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>
