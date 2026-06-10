@@ -43,22 +43,21 @@ public class DataSeeder implements CommandLineRunner {
     }
 
     private void seedUsers() {
-        if (!userRepository.existsByEmail("admin@gym.com")) {
-            AppUser admin = new AppUser();
-            admin.setName("Admin User");
-            admin.setEmail("admin@gym.com");
-            admin.setPassword(passwordEncoder.encode("admin123"));
-            admin.setRole(Role.ADMIN);
-            userRepository.save(admin);
+        upsertDemoUser("Admin User", "admin@gym.com", "admin123", Role.ADMIN);
+        upsertDemoUser("Demo User", "user@gym.com", "user123", Role.USER);
+    }
+
+    private void upsertDemoUser(String name, String email, String rawPassword, Role role) {
+        AppUser user = userRepository.findByEmail(email).orElseGet(AppUser::new);
+        user.setName(name);
+        user.setEmail(email);
+        user.setRole(role);
+
+        if (user.getPassword() == null || !passwordEncoder.matches(rawPassword, user.getPassword())) {
+            user.setPassword(passwordEncoder.encode(rawPassword));
         }
-        if (!userRepository.existsByEmail("user@gym.com")) {
-            AppUser user = new AppUser();
-            user.setName("Demo User");
-            user.setEmail("user@gym.com");
-            user.setPassword(passwordEncoder.encode("user123"));
-            user.setRole(Role.USER);
-            userRepository.save(user);
-        }
+
+        userRepository.save(user);
     }
 
     private void seedClasses() {
