@@ -112,16 +112,10 @@ public class DataSeeder implements CommandLineRunner {
     }
 
     private void migrateLegacyPrices() {
-        BigDecimal wonThreshold = new BigDecimal("1000");
-        BigDecimal conversionRate = new BigDecimal("1000");
-
-        gymClassRepository.findAll().stream()
-                .filter(gymClass -> gymClass.getPrice() != null)
-                .filter(gymClass -> gymClass.getPrice().compareTo(wonThreshold) < 0)
-                .forEach(gymClass -> {
-                    gymClass.setPrice(gymClass.getPrice().multiply(conversionRate));
-                    gymClassRepository.save(gymClass);
-                });
+        gymClassRepository.convertLegacyPricesToWon(
+                new BigDecimal("1000"),
+                new BigDecimal("1000")
+        );
     }
 
     private GymClass gymClass(
