@@ -47,10 +47,13 @@ FitReserve is a Spring Boot MVC final project for booking professional gym class
 CREATE DATABASE gym_class_booking;
 ```
 
-2. Run the app:
+2. Configure the PostgreSQL connection and run the app:
 
-```bash
-mvn spring-boot:run
+```zsh
+export DB_URL="jdbc:postgresql://localhost:5432/gym_class_booking"
+export DB_USERNAME="postgres"
+export DB_PASSWORD="your_postgres_password"
+./mvnw spring-boot:run
 ```
 
 3. Open [http://localhost:8080](http://localhost:8080) in your browser.
@@ -59,16 +62,17 @@ mvn spring-boot:run
 
 Default local settings (can be overridden with environment variables):
 
-| Variable      | Default Value                          |
-|---------------|----------------------------------------|
-| `DB_HOST`     | `localhost`                            |
-| `DB_PORT`     | `5432`                                 |
-| `DB_NAME`     | `gym_class_booking`                    |
-| `DB_USERNAME` | `postgres`                             |
-| `DB_PASSWORD` | *(empty)*                              |
-| `SERVER_PORT` | `8080`                                 |
-| `JPA_DDL_AUTO`| `update`                               |
-| `SEED_DATA`   | `true`                                 |
+| Variable       | Default Value                                             |
+|----------------|-----------------------------------------------------------|
+| `DB_URL`       | `jdbc:postgresql://localhost:5432/gym_class_booking`       |
+| `DB_USERNAME`  | `postgres`                                                |
+| `DB_PASSWORD`  | *(empty)*                                                 |
+| `PORT`         | `8080`                                                    |
+| `JPA_DDL_AUTO` | `update`                                                  |
+| `SEED_DATA`    | `true`                                                    |
+| `UPLOAD_DIR`   | `uploads`                                                 |
+
+Render may provide `DB_URL` as a `postgresql://...` connection string. The application converts that value into the JDBC format required by Spring Boot. Legacy `DATABASE_URL` is also accepted during deployment migration.
 
 ## Demo Accounts
 
@@ -81,30 +85,28 @@ Seed data is created automatically when the app starts.
 
 ## API Endpoints
 
-| Method | Path                          | Role  | Description                |
-|--------|-------------------------------|-------|----------------------------|
-| GET    | `/`                           | All   | Home page                  |
-| GET    | `/classes`                    | All   | Browse gym classes         |
-| GET    | `/classes/{id}`               | All   | Class detail page          |
-| POST   | `/bookings`                   | USER  | Book a class               |
-| POST   | `/bookings/{id}/cancel`       | USER  | Cancel a booking           |
-| GET    | `/bookings`                   | USER  | View user's bookings       |
-| GET    | `/admin`                      | ADMIN | Admin dashboard            |
-| GET    | `/admin/classes`              | ADMIN | Manage classes             |
-| GET    | `/admin/classes/new`          | ADMIN | Add class form             |
-| POST   | `/admin/classes`              | ADMIN | Save new class             |
-| GET    | `/admin/classes/{id}/edit`    | ADMIN | Edit class form            |
-| POST   | `/admin/classes`              | ADMIN | Update class               |
-| POST   | `/admin/classes/{id}/delete`  | ADMIN | Delete or hide class       |
-| GET    | `/admin/bookings`             | ADMIN | Manage bookings            |
-| POST   | `/admin/bookings/{id}/cancel` | ADMIN | Cancel any booking         |
-| GET    | `/admin/users`                | ADMIN | Manage users               |
-| POST   | `/admin/users/{id}/delete`    | ADMIN | Delete users without bookings |
-| GET    | `/signup`                     | All   | Registration form          |
-| POST   | `/signup`                     | All   | Register new user          |
-| GET    | `/register`                   | All   | Registration form alias    |
-| POST   | `/register`                   | All   | Register new user alias    |
-| GET    | `/login`                      | All   | Login page                 |
+| Method | Path                          | Role          | Description                    |
+|--------|-------------------------------|---------------|--------------------------------|
+| GET    | `/login`                      | Public        | Login form                     |
+| GET    | `/signup`                     | Public        | Registration form              |
+| POST   | `/signup`                     | Public        | Register a BCrypt user         |
+| POST   | `/logout`                     | Authenticated | Log out with CSRF protection   |
+| GET    | `/`                           | Authenticated | Home page                      |
+| GET    | `/classes`                    | Authenticated | Browse and search gym classes  |
+| GET    | `/classes/{id}`               | Authenticated | Class detail page              |
+| GET    | `/classes/new`                | ADMIN         | Add class form                 |
+| POST   | `/classes`                    | ADMIN         | Create or update a class       |
+| GET    | `/classes/{id}/edit`          | ADMIN         | Edit class form                |
+| POST   | `/classes/{id}/delete`        | ADMIN         | Delete or hide a class         |
+| GET    | `/bookings`                   | USER/ADMIN    | View user's bookings           |
+| POST   | `/bookings`                   | USER/ADMIN    | Book a class                   |
+| POST   | `/bookings/{id}/cancel`       | USER/ADMIN    | Cancel a booking               |
+| GET    | `/admin`                      | ADMIN         | Admin dashboard                |
+| GET    | `/admin/classes`              | ADMIN         | Manage classes                 |
+| GET    | `/admin/bookings`             | ADMIN         | Manage all bookings            |
+| GET    | `/admin/users`                | ADMIN         | Manage users                   |
+
+The original `/admin/classes/new`, `/admin/classes/{id}/edit`, `/admin/classes`, and `/admin/classes/{id}/delete` routes remain available for compatibility.
 
 ## Render Deployment
 
@@ -118,9 +120,26 @@ This repository is pre-configured for Render deployment:
    - A free PostgreSQL database (`gym-class-booking-db`)
    - All required environment variables
 
-The `render.yaml` maps database connection details (`DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USERNAME`, `DB_PASSWORD`) from the managed PostgreSQL service.
+The `render.yaml` maps `DB_URL`, `DB_USERNAME`, and `DB_PASSWORD` from the managed PostgreSQL service. The web service also receives `PORT` automatically from Render.
 
 **Note:** Uploaded images are stored locally in `uploads/`. On Render's free tier, local files may not persist after redeploys. The app seeds classes with stable external image URLs as a fallback.
+
+### GitHub Push
+
+```zsh
+git add .
+git commit -m "Meet full gym booking project criteria"
+git push origin main
+```
+
+### Render Deployment
+
+1. Push the repository to GitHub.
+2. Open [Render](https://dashboard.render.com/) and choose **New > Blueprint**.
+3. Select this GitHub repository. Render reads `render.yaml`.
+4. Apply the Blueprint to create the Docker web service and PostgreSQL database.
+5. Wait for the deploy to become **Live**, then open the service URL.
+6. Confirm `/login` loads, sign in, and verify `/classes`.
 
 ## Project Structure
 
@@ -142,13 +161,20 @@ src/
     └── java/.../service/    # Service-layer tests
 ```
 
-## Final Project Checklist
+## Seven-Criteria Checklist
 
-- User Authentication: complete
-- PostgreSQL + JPA: complete
-- CRUD Functions: complete through admin gym class post management
-- Image Upload: complete through admin class form
-- Search Function: complete on class listing page
-- Web Design: polished responsive UI
-- Deployment: Render blueprint included
-- Report: see `PROJECT_REPORT.md`
+1. **User Authentication:** Spring Security signup/login/logout with BCrypt passwords and role-based access.
+2. **Database:** PostgreSQL runtime database with Spring Data JPA/Hibernate and environment-based credentials.
+3. **CRUD Functions:** Admin create, read, update, delete-or-hide operations for gym classes.
+4. **Image Upload:** Validated image uploads saved under `uploads/`, with paths stored in PostgreSQL and displayed in Thymeleaf.
+5. **Search Function:** Keyword search matches class name, instructor, category, and description.
+6. **Web Design:** Responsive Thymeleaf pages with navigation, forms, validation, status messages, and custom CSS.
+7. **Deployment:** Java 17 Dockerfile, Render Blueprint, managed PostgreSQL, `PORT` support, and GitHub-ready `.gitignore`.
+
+Run the complete verification build with:
+
+```zsh
+./mvnw clean package
+```
+
+See `PROJECT_REPORT.md` for the project report and `AGENT_TASK.md` for the assignment checklist.

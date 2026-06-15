@@ -5,18 +5,10 @@ services:
     plan: free
     dockerfilePath: ./Dockerfile
     envVars:
-      - key: DB_HOST
+      - key: DB_URL
         fromDatabase:
           name: gym-class-booking-db
-          property: host
-      - key: DB_PORT
-        fromDatabase:
-          name: gym-class-booking-db
-          property: port
-      - key: DB_NAME
-        fromDatabase:
-          name: gym-class-booking-db
-          property: database
+          property: connectionString
       - key: DB_USERNAME
         fromDatabase:
           name: gym-class-booking-db

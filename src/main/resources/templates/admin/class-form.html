@@ -21,7 +21,7 @@
     <section class="panel">
         <p class="eyebrow">Admin form</p>
         <h1 th:text="${formTitle}">Class Form</h1>
-        <form class="form-grid" th:action="@{/admin/classes}" th:object="${gymClass}" method="post" enctype="multipart/form-data">
+        <form class="form-grid" th:action="@{/classes}" th:object="${gymClass}" method="post" enctype="multipart/form-data">
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
             <input type="hidden" th:field="*{id}">
             <input type="hidden" th:field="*{imagePath}">
@@ -74,6 +74,7 @@
             <label>
                 Class Image
                 <input class="form-control" type="file" name="imageFile" accept="image/*">
+                <span class="error-text" th:if="${#fields.hasErrors('imagePath')}" th:errors="*{imagePath}"></span>
             </label>
             <label>
                 <span>

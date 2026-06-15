@@ -16,7 +16,10 @@ public class RenderDatabaseUrlProcessor implements EnvironmentPostProcessor {
 
     @Override
     public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
-        String databaseUrl = environment.getProperty("DATABASE_URL");
+        String databaseUrl = environment.getProperty("DB_URL");
+        if (databaseUrl == null || databaseUrl.isBlank()) {
+            databaseUrl = environment.getProperty("DATABASE_URL");
+        }
         if (databaseUrl == null || databaseUrl.isBlank()) {
             return;
         }

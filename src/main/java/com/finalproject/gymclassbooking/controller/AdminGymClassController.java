@@ -11,13 +11,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-@RequestMapping("/admin/classes")
 public class AdminGymClassController {
 
     private static final String DEFAULT_IMAGE = "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=1200&q=80";
@@ -30,27 +28,27 @@ public class AdminGymClassController {
         this.fileStorageService = fileStorageService;
     }
 
-    @GetMapping
+    @GetMapping("/admin/classes")
     public String dashboard(Model model) {
         model.addAttribute("classes", gymClassService.findAllClasses());
         return "admin/classes";
     }
 
-    @GetMapping("/new")
+    @GetMapping({"/admin/classes/new", "/classes/new"})
     public String newClass(Model model) {
         model.addAttribute("gymClass", new GymClass());
         model.addAttribute("formTitle", "Add Gym Class");
         return "admin/class-form";
     }
 
-    @GetMapping("/{id}/edit")
+    @GetMapping({"/admin/classes/{id}/edit", "/classes/{id}/edit"})
     public String editClass(@PathVariable Long id, Model model) {
         model.addAttribute("gymClass", gymClassService.getClass(id));
         model.addAttribute("formTitle", "Edit Gym Class");
         return "admin/class-form";
     }
 
-    @PostMapping
+    @PostMapping({"/admin/classes", "/classes"})
     public String saveClass(
             @Valid @ModelAttribute("gymClass") GymClass gymClass,
             BindingResult bindingResult,
@@ -62,18 +60,24 @@ public class AdminGymClassController {
             model.addAttribute("formTitle", gymClass.getId() == null ? "Add Gym Class" : "Edit Gym Class");
             return "admin/class-form";
         }
-        String uploadedPath = fileStorageService.store(imageFile);
-        if (uploadedPath != null) {
-            gymClass.setImagePath(uploadedPath);
-        } else if (gymClass.getImagePath() == null || gymClass.getImagePath().isBlank()) {
-            gymClass.setImagePath(DEFAULT_IMAGE);
+        try {
+            String uploadedPath = fileStorageService.store(imageFile);
+            if (uploadedPath != null) {
+                gymClass.setImagePath(uploadedPath);
+            } else if (gymClass.getImagePath() == null || gymClass.getImagePath().isBlank()) {
+                gymClass.setImagePath(DEFAULT_IMAGE);
+            }
+        } catch (IllegalArgumentException exception) {
+            bindingResult.rejectValue("imagePath", "upload", exception.getMessage());
+            model.addAttribute("formTitle", gymClass.getId() == null ? "Add Gym Class" : "Edit Gym Class");
+            return "admin/class-form";
         }
         gymClassService.save(gymClass);
         redirectAttributes.addFlashAttribute("success", "Gym class saved.");
         return "redirect:/admin/classes";
     }
 
-    @PostMapping("/{id}/delete")
+    @PostMapping({"/admin/classes/{id}/delete", "/classes/{id}/delete"})
     public String deleteClass(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         gymClassService.delete(id);
         redirectAttributes.addFlashAttribute("success", "Gym class deleted or hidden if it already had bookings.");
