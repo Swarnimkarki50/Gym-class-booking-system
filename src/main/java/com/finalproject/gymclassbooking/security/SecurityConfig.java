@@ -25,7 +25,11 @@ public class SecurityConfig {
                 .formLogin(login -> login
                         .loginPage("/login")
                         .usernameParameter("email")
-                        .defaultSuccessUrl("/classes", true)
+                        .successHandler((request, response, authentication) -> {
+                            boolean isAdmin = authentication.getAuthorities().stream()
+                                    .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+                            response.sendRedirect(isAdmin ? "/admin" : "/classes");
+                        })
                         .permitAll()
                 )
                 .logout(logout -> logout

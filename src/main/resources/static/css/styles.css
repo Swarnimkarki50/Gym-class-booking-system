@@ -387,6 +387,197 @@ th {
     max-width: 480px;
 }
 
+.admin-shell {
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr);
+    min-height: 100vh;
+}
+
+.admin-sidebar {
+    background: #17212b;
+    color: #d9e1e8;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding: 28px 20px 20px;
+}
+
+.admin-brand {
+    color: white;
+    font-size: 23px;
+}
+
+.admin-label {
+    color: #8fa0af;
+    font-size: 12px;
+    font-weight: 800;
+    margin: 34px 10px 10px;
+    text-transform: uppercase;
+}
+
+.admin-nav {
+    display: grid;
+    gap: 5px;
+}
+
+.admin-nav a {
+    border-radius: 6px;
+    color: #d9e1e8;
+    font-weight: 700;
+    padding: 11px 12px;
+}
+
+.admin-nav a:hover,
+.admin-nav a.active {
+    background: #263746;
+    color: white;
+    text-decoration: none;
+}
+
+.admin-sidebar-footer {
+    display: grid;
+    gap: 10px;
+    margin-top: auto;
+}
+
+.admin-sidebar-footer form,
+.admin-sidebar-footer .button,
+.admin-sidebar-footer button {
+    margin: 0;
+    width: 100%;
+}
+
+.admin-main {
+    min-width: 0;
+    padding: 34px clamp(20px, 4vw, 52px) 60px;
+}
+
+.admin-heading,
+.admin-panel-head {
+    align-items: center;
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.admin-heading {
+    margin-bottom: 26px;
+}
+
+.admin-heading h1,
+.admin-panel-head h2 {
+    margin: 0;
+}
+
+.admin-stats {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.admin-stat {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    color: var(--muted);
+    display: grid;
+    gap: 6px;
+    min-height: 150px;
+    padding: 22px;
+}
+
+.admin-stat:hover {
+    border-color: #a9b9c8;
+    text-decoration: none;
+}
+
+.admin-stat strong {
+    color: var(--ink);
+    font-size: 34px;
+    line-height: 1;
+}
+
+.admin-stat-label {
+    color: var(--ink);
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.admin-panel {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    margin-top: 22px;
+    padding: 22px;
+}
+
+.admin-actions-grid {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-top: 18px;
+}
+
+.admin-action {
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    color: var(--muted);
+    display: grid;
+    gap: 7px;
+    min-height: 120px;
+    padding: 18px;
+}
+
+.admin-action strong {
+    color: var(--ink);
+}
+
+.admin-action:hover {
+    background: var(--soft);
+    text-decoration: none;
+}
+
+.admin-table {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+}
+
+.class-cell {
+    align-items: center;
+    display: flex;
+    gap: 12px;
+    min-width: 220px;
+}
+
+.class-cell img {
+    background: #dce4eb;
+    border-radius: 6px;
+    height: 54px;
+    object-fit: cover;
+    width: 72px;
+}
+
+.empty-state {
+    background: var(--paper);
+    border: 1px dashed #b9c5d0;
+    border-radius: 8px;
+    color: var(--muted);
+    padding: 28px;
+    text-align: center;
+}
+
+.admin-form {
+    max-width: 900px;
+}
+
+.current-image {
+    border-radius: 6px;
+    height: 110px;
+    object-fit: cover;
+    width: 160px;
+}
+
 @media (max-width: 760px) {
     .nav {
         align-items: flex-start;
@@ -407,5 +598,43 @@ th {
 
     .search-row {
         display: grid;
+    }
+
+    .admin-shell {
+        display: block;
+    }
+
+    .admin-sidebar {
+        min-height: auto;
+        padding: 18px;
+    }
+
+    .admin-label {
+        margin: 18px 0 8px;
+    }
+
+    .admin-nav {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .admin-sidebar-footer {
+        grid-template-columns: 1fr 1fr;
+        margin-top: 16px;
+    }
+
+    .admin-main {
+        padding: 24px 16px 48px;
+    }
+
+    .admin-heading,
+    .admin-panel-head,
+    .section-head {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .admin-stats,
+    .admin-actions-grid {
+        grid-template-columns: 1fr;
     }
 }

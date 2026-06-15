@@ -93,6 +93,23 @@ class CriteriaIntegrationTest {
     }
 
     @Test
+    void adminLoginOpensAdminDashboard() throws Exception {
+        AppUser admin = new AppUser();
+        admin.setName("Admin User");
+        admin.setEmail("admin@example.com");
+        admin.setPassword(passwordEncoder.encode("admin123"));
+        admin.setRole(Role.ADMIN);
+        userRepository.save(admin);
+
+        mockMvc.perform(post("/login")
+                        .with(csrf())
+                        .param("email", "admin@example.com")
+                        .param("password", "admin123"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/admin"));
+    }
+
+    @Test
     void classManagementAliasesRequireAdminAndSupportCrudWithImage() throws Exception {
         mockMvc.perform(get("/classes/new").with(user("member@example.com").roles("USER")))
                 .andExpect(status().isForbidden());

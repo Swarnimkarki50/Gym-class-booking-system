@@ -7,34 +7,36 @@
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
-<header class="topbar">
-    <nav class="nav">
-        <a class="brand" th:href="@{/}">FitReserve</a>
-        <div class="nav-links">
-            <a th:href="@{/classes}">Classes</a>
-            <a th:href="@{/admin}">Dashboard</a>
-            <a th:href="@{/admin/classes}">Manage Classes</a>
+<div class="admin-shell">
+    <aside class="admin-sidebar">
+        <a class="brand admin-brand" th:href="@{/admin}">FitReserve</a>
+        <p class="admin-label">Administration</p>
+        <nav class="admin-nav">
+            <a th:href="@{/admin}">Overview</a>
+            <a th:href="@{/admin/classes}">Gym Classes</a>
             <a th:href="@{/admin/bookings}">Bookings</a>
-            <a th:href="@{/admin/users}">Users</a>
+            <a class="active" th:href="@{/admin/users}">Users</a>
+        </nav>
+        <div class="admin-sidebar-footer">
+            <a class="button secondary" th:href="@{/classes}">View Member Site</a>
             <form th:action="@{/logout}" method="post">
                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
                 <button type="submit" class="button secondary">Logout</button>
             </form>
         </div>
-    </nav>
-</header>
-<main class="main">
-    <div class="section-head">
-        <div>
-            <p class="eyebrow">Admin dashboard</p>
-            <h1>User Management</h1>
-            <p class="meta">Review registered members and admin accounts.</p>
+    </aside>
+    <main class="admin-main">
+        <div class="admin-heading">
+            <div>
+                <p class="eyebrow">Accounts</p>
+                <h1>Users</h1>
+                <p class="meta">Review registered members and administrator accounts.</p>
+            </div>
         </div>
-    </div>
-    <div class="alert success" th:if="${success}" th:text="${success}"></div>
-    <div class="alert error" th:if="${error}" th:text="${error}"></div>
-    <div class="table-wrap">
-        <table>
+        <div class="alert success" th:if="${success}" th:text="${success}"></div>
+        <div class="alert error" th:if="${error}" th:text="${error}"></div>
+        <div class="table-wrap admin-table">
+            <table>
             <thead>
             <tr>
                 <th>Name</th>
@@ -57,8 +59,9 @@
                 </td>
             </tr>
             </tbody>
-        </table>
-    </div>
-</main>
+            </table>
+        </div>
+    </main>
+</div>
 </body>
 </html>

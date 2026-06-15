@@ -30,6 +30,10 @@
             <h1>Available Gym Classes</h1>
             <p class="meta">Search by class name, category, instructor, or description.</p>
         </div>
+        <div class="actions" sec:authorize="hasRole('ADMIN')">
+            <a class="button secondary" th:href="@{/admin}">Admin Dashboard</a>
+            <a class="button" th:href="@{/classes/new}">Add New Class</a>
+        </div>
     </div>
     <form class="search-row search-panel" th:action="@{/classes}" method="get">
         <input type="search" name="keyword" th:value="${keyword}" placeholder="Example: yoga, strength, Sarah">

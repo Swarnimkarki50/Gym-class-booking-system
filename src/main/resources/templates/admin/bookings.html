@@ -7,34 +7,36 @@
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
-<header class="topbar">
-    <nav class="nav">
-        <a class="brand" th:href="@{/}">FitReserve</a>
-        <div class="nav-links">
-            <a th:href="@{/classes}">Classes</a>
-            <a th:href="@{/admin}">Dashboard</a>
-            <a th:href="@{/admin/classes}">Manage Classes</a>
-            <a th:href="@{/admin/bookings}">Bookings</a>
+<div class="admin-shell">
+    <aside class="admin-sidebar">
+        <a class="brand admin-brand" th:href="@{/admin}">FitReserve</a>
+        <p class="admin-label">Administration</p>
+        <nav class="admin-nav">
+            <a th:href="@{/admin}">Overview</a>
+            <a th:href="@{/admin/classes}">Gym Classes</a>
+            <a class="active" th:href="@{/admin/bookings}">Bookings</a>
             <a th:href="@{/admin/users}">Users</a>
+        </nav>
+        <div class="admin-sidebar-footer">
+            <a class="button secondary" th:href="@{/classes}">View Member Site</a>
             <form th:action="@{/logout}" method="post">
                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
                 <button type="submit" class="button secondary">Logout</button>
             </form>
         </div>
-    </nav>
-</header>
-<main class="main">
-    <div class="section-head">
-        <div>
-            <p class="eyebrow">Admin dashboard</p>
-            <h1>Booking Management</h1>
-            <p class="meta">View member reservations and cancel bookings when needed.</p>
+    </aside>
+    <main class="admin-main">
+        <div class="admin-heading">
+            <div>
+                <p class="eyebrow">Reservations</p>
+                <h1>Bookings</h1>
+                <p class="meta">Review member reservations and cancel bookings when needed.</p>
+            </div>
         </div>
-    </div>
-    <div class="alert success" th:if="${success}" th:text="${success}"></div>
-    <p class="meta" th:if="${#lists.isEmpty(bookings)}">No bookings have been created yet.</p>
-    <div class="table-wrap" th:if="${!#lists.isEmpty(bookings)}">
-        <table>
+        <div class="alert success" th:if="${success}" th:text="${success}"></div>
+        <p class="empty-state" th:if="${#lists.isEmpty(bookings)}">No bookings have been created yet.</p>
+        <div class="table-wrap admin-table" th:if="${!#lists.isEmpty(bookings)}">
+            <table>
             <thead>
             <tr>
                 <th>Member</th>
@@ -66,8 +68,9 @@
                 </td>
             </tr>
             </tbody>
-        </table>
-    </div>
-</main>
+            </table>
+        </div>
+    </main>
+</div>
 </body>
 </html>
