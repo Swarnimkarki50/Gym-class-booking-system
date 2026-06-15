@@ -6,12 +6,22 @@
     <title>Register</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
-<body>
-<main class="main auth-shell">
-    <a class="brand" th:href="@{/}">FitReserve</a>
-    <section class="panel">
+<body class="auth-page">
+<main class="auth-layout">
+    <section class="auth-visual register-visual">
+        <a class="brand auth-brand" th:href="@{/}">FitReserve</a>
+        <div class="auth-visual-copy">
+            <p class="eyebrow">Your next chapter</p>
+            <h1>Show up.<br>Get stronger.</h1>
+            <p>Discover expert-led sessions and build a schedule that works around your life.</p>
+        </div>
+        <p class="auth-quote">Your first class is only a few details away.</p>
+    </section>
+    <section class="auth-form-side">
+        <div class="auth-form-card">
         <p class="eyebrow">Join the studio</p>
-        <h1>Create Account</h1>
+        <h2>Create your account</h2>
+        <p class="auth-intro">Set up your member profile and start booking classes.</p>
         <form class="form-grid" th:action="@{/register}" th:object="${user}" method="post">
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
             <label>
@@ -29,9 +39,10 @@
                 <input class="form-control" type="password" th:field="*{password}" required>
                 <span class="error-text" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
             </label>
-            <button type="submit">Register</button>
+            <button class="wide" type="submit">Create Account</button>
         </form>
-        <p class="meta">Already have an account? <a th:href="@{/login}">Login</a></p>
+        <p class="auth-switch">Already have an account? <a th:href="@{/login}">Sign in</a></p>
+        </div>
     </section>
 </main>
 </body>

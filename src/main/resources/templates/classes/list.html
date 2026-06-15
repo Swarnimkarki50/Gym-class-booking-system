@@ -24,11 +24,11 @@
     </nav>
 </header>
 <main class="main">
-    <div class="section-head">
+    <div class="page-heading">
         <div>
             <p class="eyebrow">Browse schedule</p>
-            <h1>Available Gym Classes</h1>
-            <p class="meta">Search by class name, category, instructor, or description.</p>
+            <h1>Find your next session</h1>
+            <p>Explore the schedule and book a class that matches your energy.</p>
         </div>
         <div class="actions" sec:authorize="hasRole('ADMIN')">
             <a class="button secondary" th:href="@{/admin}">Admin Dashboard</a>
@@ -39,18 +39,27 @@
         <input type="search" name="keyword" th:value="${keyword}" placeholder="Example: yoga, strength, Sarah">
         <button type="submit">Search</button>
     </form>
-    <p class="meta" th:if="${#lists.isEmpty(classes)}">No active classes matched your search.</p>
+    <div class="empty-state" th:if="${#lists.isEmpty(classes)}">
+        <strong>No classes found</strong>
+        <span>Try a different class name, category, or instructor.</span>
+        <a class="button secondary" th:href="@{/classes}">Clear Search</a>
+    </div>
     <section class="grid">
         <article class="card" th:each="gymClass : ${classes}">
             <img class="class-image" th:src="${gymClass.imagePath}" th:alt="${gymClass.name}">
             <div class="card-body">
                 <span class="pill" th:text="${gymClass.category}">Category</span>
                 <h3 th:text="${gymClass.name}">Class name</h3>
-                <p class="meta" th:text="${'Coach ' + gymClass.instructor + ' / ' + gymClass.capacity + ' seats'}"></p>
-                <p th:text="${gymClass.description}">Description</p>
-                <p class="meta" th:text="${#temporals.format(gymClass.startsAt, 'MMM dd, yyyy HH:mm') + ' / ' + gymClass.durationMinutes + ' min'}"></p>
-                <p class="price" th:text="${'$' + gymClass.price}">$18</p>
-                <a class="button" th:href="@{/classes/{id}(id=${gymClass.id})}">Book This Class</a>
+                <p class="meta" th:text="${'With ' + gymClass.instructor + ' / ' + gymClass.capacity + ' seats'}"></p>
+                <p class="card-description" th:text="${gymClass.description}">Description</p>
+                <div class="class-card-footer">
+                    <div>
+                        <strong th:text="${#temporals.format(gymClass.startsAt, 'EEE, MMM dd')}">Date</strong>
+                        <span th:text="${#temporals.format(gymClass.startsAt, 'HH:mm') + ' / ' + gymClass.durationMinutes + ' min'}">Time</span>
+                    </div>
+                    <p class="price" th:text="${'$' + gymClass.price}">$18</p>
+                </div>
+                <a class="button wide" th:href="@{/classes/{id}(id=${gymClass.id})}">View Details</a>
             </div>
         </article>
     </section>

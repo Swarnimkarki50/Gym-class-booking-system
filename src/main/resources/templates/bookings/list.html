@@ -22,7 +22,7 @@
     </nav>
 </header>
 <main class="main">
-    <div class="section-head">
+    <div class="page-heading compact">
         <div>
             <p class="eyebrow">Member dashboard</p>
             <h1>My Bookings</h1>
@@ -31,7 +31,11 @@
     </div>
     <div class="alert success" th:if="${success}" th:text="${success}"></div>
     <div class="alert error" th:if="${error}" th:text="${error}"></div>
-    <p class="meta" th:if="${#lists.isEmpty(bookings)}">You do not have any class bookings yet.</p>
+    <div class="empty-state bookings-empty" th:if="${#lists.isEmpty(bookings)}">
+        <strong>Your schedule is wide open</strong>
+        <span>Book a class and it will appear here.</span>
+        <a class="button" th:href="@{/classes}">Explore Classes</a>
+    </div>
     <div class="table-wrap" th:if="${!#lists.isEmpty(bookings)}">
         <table>
             <thead>

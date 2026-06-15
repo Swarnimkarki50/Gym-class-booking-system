@@ -26,9 +26,9 @@
 <main class="main">
     <section class="hero">
         <div class="hero-content">
-            <p class="eyebrow">Professional gym class scheduling</p>
-            <h1>Book your next workout in seconds.</h1>
-            <p>Search classes, view instructors, reserve a seat, and manage bookings from one clean Spring Boot web application.</p>
+            <p class="eyebrow">Move better. Feel stronger.</p>
+            <h1>Your next great workout starts here.</h1>
+            <p>Expert coaches, focused sessions, and a schedule built to keep you moving.</p>
             <form class="search-row" th:action="@{/classes}" method="get">
                 <input type="search" name="keyword" placeholder="Search yoga, HIIT, cycling, instructor name">
                 <button type="submit">Find Classes</button>
@@ -37,9 +37,9 @@
     </section>
 
     <div class="stats">
-        <div><strong>4+</strong><span>Class Types</span></div>
-        <div><strong>Secure</strong><span>Login and roles</span></div>
-        <div><strong>PostgreSQL</strong><span>JPA database</span></div>
+        <div><strong>4+</strong><span>Training styles</span></div>
+        <div><strong>45-60</strong><span>Minutes per class</span></div>
+        <div><strong>All levels</strong><span>Everybody belongs</span></div>
     </div>
 
     <div class="section-head">
@@ -54,12 +54,18 @@
         <article class="card" th:each="gymClass : ${classes}">
             <img class="class-image" th:src="${gymClass.imagePath}" th:alt="${gymClass.name}">
             <div class="card-body">
-                <p class="meta" th:text="${gymClass.category + ' / ' + gymClass.instructor}">Yoga / Instructor</p>
+                <span class="pill" th:text="${gymClass.category}">Category</span>
                 <h3 th:text="${gymClass.name}">Class name</h3>
-                <p th:text="${gymClass.description}">Description</p>
-                <p class="meta" th:text="${#temporals.format(gymClass.startsAt, 'MMM dd, yyyy HH:mm') + ' / ' + gymClass.durationMinutes + ' min'}"></p>
-                <p class="price" th:text="${'$' + gymClass.price}">$18</p>
-                <a class="button" th:href="@{/classes/{id}(id=${gymClass.id})}">View Class</a>
+                <p class="meta" th:text="${'With ' + gymClass.instructor}">Instructor</p>
+                <p class="card-description" th:text="${gymClass.description}">Description</p>
+                <div class="class-card-footer">
+                    <div>
+                        <strong th:text="${#temporals.format(gymClass.startsAt, 'EEE, MMM dd')}">Date</strong>
+                        <span th:text="${#temporals.format(gymClass.startsAt, 'HH:mm') + ' / ' + gymClass.durationMinutes + ' min'}">Time</span>
+                    </div>
+                    <p class="price" th:text="${'$' + gymClass.price}">$18</p>
+                </div>
+                <a class="button wide" th:href="@{/classes/{id}(id=${gymClass.id})}">View Class</a>
             </div>
         </article>
     </section>

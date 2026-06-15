@@ -30,14 +30,17 @@
     <section class="detail-layout">
         <div class="detail-main">
             <img class="class-image hero-image" th:src="${gymClass.imagePath}" th:alt="${gymClass.name}">
-            <p class="eyebrow" th:text="${gymClass.category}">Category</p>
-            <h1 th:text="${gymClass.name}">Class name</h1>
-            <p class="meta" th:text="${'Coach ' + gymClass.instructor + ' / ' + gymClass.durationMinutes + ' minutes'}"></p>
-            <p th:text="${gymClass.description}">Class description</p>
+            <div class="detail-copy">
+                <span class="pill" th:text="${gymClass.category}">Category</span>
+                <h1 th:text="${gymClass.name}">Class name</h1>
+                <p class="detail-coach" th:text="${'Led by ' + gymClass.instructor}">Instructor</p>
+                <p class="detail-description" th:text="${gymClass.description}">Class description</p>
+            </div>
         </div>
 
         <aside class="panel booking-panel">
-            <p class="price" th:text="${'$' + gymClass.price}">$18</p>
+            <p class="booking-kicker">Your session</p>
+            <div class="booking-price"><span>Per person</span><strong th:text="${'$' + gymClass.price}">$18</strong></div>
             <dl class="facts">
                 <div>
                     <dt>Date and Time</dt>
@@ -55,7 +58,7 @@
             <form sec:authorize="isAuthenticated()" class="form-grid" th:action="@{/bookings}" method="post">
                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
                 <input type="hidden" name="classId" th:value="${gymClass.id}">
-                <button type="submit">Reserve Seat</button>
+                <button class="wide" type="submit">Reserve Your Seat</button>
             </form>
             <div sec:authorize="!isAuthenticated()">
                 <p>Please login to reserve a seat.</p>

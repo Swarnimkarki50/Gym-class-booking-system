@@ -6,12 +6,22 @@
     <title>Login</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
-<body>
-<main class="main auth-shell">
-    <a class="brand" th:href="@{/}">FitReserve</a>
-    <section class="panel">
+<body class="auth-page">
+<main class="auth-layout">
+    <section class="auth-visual">
+        <a class="brand auth-brand" th:href="@{/}">FitReserve</a>
+        <div class="auth-visual-copy">
+            <p class="eyebrow">Train on your terms</p>
+            <h1>One login.<br>Every workout.</h1>
+            <p>Reserve classes, follow your schedule, and keep your training week moving.</p>
+        </div>
+        <p class="auth-quote">Strong habits start with one booked session.</p>
+    </section>
+    <section class="auth-form-side">
+        <div class="auth-form-card">
         <p class="eyebrow">Welcome back</p>
-        <h1>Login</h1>
+        <h2>Sign in to FitReserve</h2>
+        <p class="auth-intro">Enter your details to manage your classes and bookings.</p>
         <div class="alert success" th:if="${success}" th:text="${success}"></div>
         <div class="alert error" th:if="${param.error}">Invalid email or password.</div>
         <div class="alert success" th:if="${param.logout}">You have been logged out.</div>
@@ -25,10 +35,15 @@
                 Password
                 <input class="form-control" type="password" name="password" required>
             </label>
-            <button type="submit">Login</button>
+            <button class="wide" type="submit">Sign In</button>
         </form>
-        <p class="meta">New member? <a th:href="@{/register}">Create an account</a></p>
-        <p class="meta">Demo admin: admin@gym.com / admin123<br>Demo user: user@gym.com / user123</p>
+        <p class="auth-switch">New to FitReserve? <a th:href="@{/register}">Create an account</a></p>
+        <div class="demo-access">
+            <strong>Demo access</strong>
+            <span>Admin: admin@gym.com / admin123</span>
+            <span>Member: user@gym.com / user123</span>
+        </div>
+        </div>
     </section>
 </main>
 </body>
