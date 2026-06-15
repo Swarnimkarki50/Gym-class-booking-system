@@ -42,7 +42,7 @@
                 <th>Member</th>
                 <th>Class</th>
                 <th>Schedule</th>
-                <th>Price</th>
+                <th>Price (KRW)</th>
                 <th>Status</th>
                 <th>Action</th>
             </tr>
@@ -58,7 +58,7 @@
                     <div class="meta" th:text="${booking.gymClass.category + ' / Coach ' + booking.gymClass.instructor}">Category</div>
                 </td>
                 <td th:text="${#temporals.format(booking.gymClass.startsAt, 'MMM dd, yyyy HH:mm')}">Schedule</td>
-                <td th:text="${'$' + booking.totalPrice}">$18</td>
+                <td th:text="${'₩' + #numbers.formatDecimal(booking.totalPrice, 1, 'COMMA', 0, 'POINT')}">₩18,000</td>
                 <td><span class="status" th:classappend="${booking.status.name().toLowerCase()}" th:text="${booking.status}"></span></td>
                 <td>
                     <form th:if="${booking.status.name() == 'BOOKED'}" th:action="@{/admin/bookings/{id}/cancel(id=${booking.id})}" method="post">

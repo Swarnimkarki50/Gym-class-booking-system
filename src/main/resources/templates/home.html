@@ -63,7 +63,7 @@
                         <strong th:text="${#temporals.format(gymClass.startsAt, 'EEE, MMM dd')}">Date</strong>
                         <span th:text="${#temporals.format(gymClass.startsAt, 'HH:mm') + ' / ' + gymClass.durationMinutes + ' min'}">Time</span>
                     </div>
-                    <p class="price" th:text="${'$' + gymClass.price}">$18</p>
+                    <p class="price" th:text="${'₩' + #numbers.formatDecimal(gymClass.price, 1, 'COMMA', 0, 'POINT')}">₩18,000</p>
                 </div>
                 <a class="button wide" th:href="@{/classes/{id}(id=${gymClass.id})}">View Class</a>
             </div>

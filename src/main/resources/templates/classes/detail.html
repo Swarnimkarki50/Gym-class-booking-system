@@ -40,7 +40,7 @@
 
         <aside class="panel booking-panel">
             <p class="booking-kicker">Your session</p>
-            <div class="booking-price"><span>Per person</span><strong th:text="${'$' + gymClass.price}">$18</strong></div>
+            <div class="booking-price"><span>Per person</span><strong th:text="${'₩' + #numbers.formatDecimal(gymClass.price, 1, 'COMMA', 0, 'POINT')}">₩18,000</strong></div>
             <dl class="facts">
                 <div>
                     <dt>Date and Time</dt>

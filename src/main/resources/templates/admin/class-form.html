@@ -72,8 +72,8 @@
                 </label>
             </div>
             <label>
-                Price
-                <input class="form-control" type="number" min="0" step="0.01" th:field="*{price}" required>
+                Price (Korean Won)
+                <input class="form-control" type="number" min="0" step="1000" th:field="*{price}" placeholder="18000" required>
                 <span class="error-text" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></span>
             </label>
             <label>

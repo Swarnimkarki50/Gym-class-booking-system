@@ -61,6 +61,7 @@ public class DataSeeder implements CommandLineRunner {
     }
 
     private void seedClasses() {
+        migrateLegacyPrices();
         if (gymClassRepository.count() > 0) {
             return;
         }
@@ -69,7 +70,7 @@ public class DataSeeder implements CommandLineRunner {
                 "Sarah Kim",
                 "HIIT",
                 "A fast-paced full-body session with intervals, bodyweight strength, and cardio blocks.",
-                new BigDecimal("18.00"),
+                new BigDecimal("18000"),
                 18,
                 LocalDateTime.now().plusDays(2).withHour(7).withMinute(30),
                 45,
@@ -80,7 +81,7 @@ public class DataSeeder implements CommandLineRunner {
                 "Mina Park",
                 "Yoga",
                 "Build flexibility, balance, and calm through a guided vinyasa flow for all levels.",
-                new BigDecimal("15.00"),
+                new BigDecimal("15000"),
                 20,
                 LocalDateTime.now().plusDays(3).withHour(18).withMinute(0),
                 60,
@@ -91,7 +92,7 @@ public class DataSeeder implements CommandLineRunner {
                 "Daniel Lee",
                 "Strength",
                 "Learn safe lifting technique with coached squats, presses, rows, and core work.",
-                new BigDecimal("22.00"),
+                new BigDecimal("22000"),
                 12,
                 LocalDateTime.now().plusDays(4).withHour(19).withMinute(15),
                 50,
@@ -102,12 +103,25 @@ public class DataSeeder implements CommandLineRunner {
                 "Alex Morgan",
                 "Cycling",
                 "A music-driven indoor cycling workout focused on stamina, climbs, and sprint intervals.",
-                new BigDecimal("17.00"),
+                new BigDecimal("17000"),
                 16,
                 LocalDateTime.now().plusDays(5).withHour(8).withMinute(0),
                 45,
                 "https://images.unsplash.com/photo-1599058917212-d750089bc07e?auto=format&fit=crop&w=1200&q=80"
         ));
+    }
+
+    private void migrateLegacyPrices() {
+        BigDecimal wonThreshold = new BigDecimal("1000");
+        BigDecimal conversionRate = new BigDecimal("1000");
+
+        gymClassRepository.findAll().stream()
+                .filter(gymClass -> gymClass.getPrice() != null)
+                .filter(gymClass -> gymClass.getPrice().compareTo(wonThreshold) < 0)
+                .forEach(gymClass -> {
+                    gymClass.setPrice(gymClass.getPrice().multiply(conversionRate));
+                    gymClassRepository.save(gymClass);
+                });
     }
 
     private GymClass gymClass(

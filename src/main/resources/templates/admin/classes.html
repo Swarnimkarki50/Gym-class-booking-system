@@ -44,7 +44,7 @@
                 <th>Instructor</th>
                 <th>Category</th>
                 <th>Schedule</th>
-                <th>Price</th>
+                <th>Price (KRW)</th>
                 <th>Status</th>
                 <th>Actions</th>
             </tr>
@@ -63,7 +63,7 @@
                 <td th:text="${gymClass.instructor}">Instructor</td>
                 <td th:text="${gymClass.category}">Category</td>
                 <td th:text="${#temporals.format(gymClass.startsAt, 'MMM dd, yyyy HH:mm')}">Schedule</td>
-                <td th:text="${'$' + gymClass.price}">$18</td>
+                <td th:text="${'₩' + #numbers.formatDecimal(gymClass.price, 1, 'COMMA', 0, 'POINT')}">₩18,000</td>
                 <td>
                     <span class="status" th:classappend="${gymClass.active ? 'available' : 'hidden'}"
                           th:text="${gymClass.active ? 'Active' : 'Hidden'}"></span>
