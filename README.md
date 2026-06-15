@@ -27,7 +27,7 @@ FitReserve is a Spring Boot MVC final project for booking professional gym class
 | Backend     | Java 17, Spring Boot 3, Spring MVC |
 | Security    | Spring Security                    |
 | Database    | PostgreSQL, Spring Data JPA        |
-| Frontend    | Thymeleaf, HTML, CSS, Bootstrap    |
+| Frontend    | Thymeleaf, HTML, custom CSS        |
 | Build       | Maven                              |
 | Deployment  | Docker, Render                     |
 
@@ -137,8 +137,7 @@ src/
 │   └── resources/
 │       ├── static/          # CSS, images, JS
 │       ├── templates/       # Thymeleaf views
-│       ├── application.properties
-│       └── seed.sql
+│       └── application.properties
 └── test/
     └── java/.../service/    # Service-layer tests
 ```
@@ -147,7 +146,7 @@ src/
 
 - User Authentication: complete
 - PostgreSQL + JPA: complete
-- CRUD Functions: complete through admin class management
+- CRUD Functions: complete through admin gym class post management
 - Image Upload: complete through admin class form
 - Search Function: complete on class listing page
 - Web Design: polished responsive UI
