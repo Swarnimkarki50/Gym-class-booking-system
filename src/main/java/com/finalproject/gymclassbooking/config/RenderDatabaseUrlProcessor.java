@@ -21,6 +21,7 @@ public class RenderDatabaseUrlProcessor implements EnvironmentPostProcessor {
             databaseUrl = environment.getProperty("DATABASE_URL");
         }
         if (databaseUrl == null || databaseUrl.isBlank()) {
+            addLegacyHostProperties(environment);
             return;
         }
         if (!databaseUrl.startsWith("postgres://") && !databaseUrl.startsWith("postgresql://")) {
@@ -46,6 +47,22 @@ public class RenderDatabaseUrlProcessor implements EnvironmentPostProcessor {
 
         MutablePropertySources propertySources = environment.getPropertySources();
         propertySources.addFirst(new MapPropertySource("renderDatabaseUrl", datasourceProperties));
+    }
+
+    private void addLegacyHostProperties(ConfigurableEnvironment environment) {
+        String host = environment.getProperty("DB_HOST");
+        if (host == null || host.isBlank()) {
+            return;
+        }
+        String port = environment.getProperty("DB_PORT", "5432");
+        String database = environment.getProperty("DB_NAME", "gym_class_booking");
+        Map<String, Object> datasourceProperties = Map.of(
+                "spring.datasource.url",
+                "jdbc:postgresql://" + host + ":" + port + "/" + database
+        );
+        environment.getPropertySources().addFirst(
+                new MapPropertySource("legacyRenderDatabaseHost", datasourceProperties)
+        );
     }
 
     private String[] parseCredentials(String userInfo) {

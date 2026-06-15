@@ -39,4 +39,22 @@ class RenderDatabaseUrlProcessorTest {
         assertThat(environment.getProperty("spring.datasource.url"))
                 .isEqualTo("jdbc:postgresql://localhost:5432/gym_db");
     }
+
+    @Test
+    void supportsPreviousRenderHostVariablesDuringBlueprintTransition() {
+        StandardEnvironment environment = new StandardEnvironment();
+        environment.getPropertySources().addFirst(new MapPropertySource(
+                "test",
+                Map.of(
+                        "DB_HOST", "legacy-db.internal",
+                        "DB_PORT", "5434",
+                        "DB_NAME", "legacy_gym"
+                )
+        ));
+
+        new RenderDatabaseUrlProcessor().postProcessEnvironment(environment, null);
+
+        assertThat(environment.getProperty("spring.datasource.url"))
+                .isEqualTo("jdbc:postgresql://legacy-db.internal:5434/legacy_gym");
+    }
 }

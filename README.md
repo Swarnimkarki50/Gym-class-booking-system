@@ -72,7 +72,7 @@ Default local settings (can be overridden with environment variables):
 | `SEED_DATA`    | `true`                                                    |
 | `UPLOAD_DIR`   | `uploads`                                                 |
 
-Render may provide `DB_URL` as a `postgresql://...` connection string. The application converts that value into the JDBC format required by Spring Boot. Legacy `DATABASE_URL` is also accepted during deployment migration.
+Render may provide `DB_URL` as a `postgresql://...` connection string. The application converts that value into the JDBC format required by Spring Boot. Legacy `DATABASE_URL` and the previous `DB_HOST`/`DB_PORT`/`DB_NAME` variables are also accepted during deployment migration.
 
 ## Demo Accounts
 
