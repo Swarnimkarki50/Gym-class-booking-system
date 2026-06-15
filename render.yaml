@@ -3,11 +3,28 @@ services:
     name: gym-class-booking-system
     runtime: docker
     plan: free
+    dockerfilePath: ./Dockerfile
     envVars:
-      - key: DATABASE_URL
+      - key: DB_HOST
         fromDatabase:
           name: gym-class-booking-db
-          property: connectionString
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: gym-class-booking-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: gym-class-booking-db
+          property: database
+      - key: DB_USERNAME
+        fromDatabase:
+          name: gym-class-booking-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: gym-class-booking-db
+          property: password
       - key: JPA_DDL_AUTO
         value: update
       - key: SEED_DATA
@@ -16,4 +33,6 @@ services:
         value: /app/uploads
 databases:
   - name: gym-class-booking-db
+    databaseName: gym_class_booking
+    user: gym_class_booking
     plan: free

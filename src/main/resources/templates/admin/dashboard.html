@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<header class="topbar">
+    <nav class="nav">
+        <a class="brand" th:href="@{/}">FitReserve</a>
+        <div class="nav-links">
+            <a th:href="@{/classes}">Classes</a>
+            <a th:href="@{/admin}">Dashboard</a>
+            <a th:href="@{/admin/classes}">Manage Classes</a>
+            <a th:href="@{/admin/bookings}">Bookings</a>
+            <a th:href="@{/admin/users}">Users</a>
+            <form th:action="@{/logout}" method="post">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                <button type="submit" class="button secondary">Logout</button>
+            </form>
+        </div>
+    </nav>
+</header>
+<main class="main">
+    <div class="section-head">
+        <div>
+            <p class="eyebrow">Admin dashboard</p>
+            <h1>FitReserve Overview</h1>
+            <p class="meta">Monitor members, classes, and reservations from one place.</p>
+        </div>
+        <a class="button" th:href="@{/admin/classes/new}">Add Class</a>
+    </div>
+
+    <section class="grid">
+        <article class="card">
+            <div class="card-body">
+                <p class="eyebrow">Users</p>
+                <h2 th:text="${totalUsers}">0</h2>
+                <p class="meta" th:text="${totalMembers + ' members / ' + totalAdmins + ' admins'}">Members</p>
+                <a class="button secondary" th:href="@{/admin/users}">Manage Users</a>
+            </div>
+        </article>
+        <article class="card">
+            <div class="card-body">
+                <p class="eyebrow">Classes</p>
+                <h2 th:text="${totalClasses}">0</h2>
+                <p class="meta" th:text="${activeClasses + ' active classes'}">Active classes</p>
+                <a class="button secondary" th:href="@{/admin/classes}">Manage Classes</a>
+            </div>
+        </article>
+        <article class="card">
+            <div class="card-body">
+                <p class="eyebrow">Bookings</p>
+                <h2 th:text="${totalBookings}">0</h2>
+                <p class="meta" th:text="${activeBookings + ' currently booked'}">Active bookings</p>
+                <a class="button secondary" th:href="@{/admin/bookings}">View Bookings</a>
+            </div>
+        </article>
+    </section>
+
+    <div class="section-head">
+        <div>
+            <p class="eyebrow">Recent activity</p>
+            <h2>Latest Bookings</h2>
+        </div>
+    </div>
+    <p class="meta" th:if="${#lists.isEmpty(recentBookings)}">No bookings have been created yet.</p>
+    <div class="table-wrap" th:if="${!#lists.isEmpty(recentBookings)}">
+        <table>
+            <thead>
+            <tr>
+                <th>Member</th>
+                <th>Class</th>
+                <th>Created</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="booking : ${recentBookings}">
+                <td>
+                    <strong th:text="${booking.user.name}">Member</strong>
+                    <div class="meta" th:text="${booking.user.email}">email</div>
+                </td>
+                <td>
+                    <strong th:text="${booking.gymClass.name}">Class</strong>
+                    <div class="meta" th:text="${#temporals.format(booking.gymClass.startsAt, 'MMM dd, yyyy HH:mm')}">Schedule</div>
+                </td>
+                <td th:text="${#temporals.format(booking.createdAt, 'MMM dd, yyyy HH:mm')}">Created</td>
+                <td><span class="status" th:classappend="${booking.status.name().toLowerCase()}" th:text="${booking.status}"></span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>

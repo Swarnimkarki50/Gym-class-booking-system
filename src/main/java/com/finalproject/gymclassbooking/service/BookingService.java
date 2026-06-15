@@ -42,6 +42,10 @@ public class BookingService {
         return bookingRepository.findByUserOrderByCreatedAtDesc(user);
     }
 
+    public List<Booking> findAllBookings() {
+        return bookingRepository.findAllByOrderByCreatedAtDesc();
+    }
+
     @Transactional
     public void cancelBooking(Long bookingId, AppUser user) {
         Booking booking = bookingRepository.findById(bookingId)
@@ -49,6 +53,13 @@ public class BookingService {
         if (!booking.getUser().getId().equals(user.getId())) {
             throw new IllegalArgumentException("You can only cancel your own bookings.");
         }
+        booking.setStatus(BookingStatus.CANCELLED);
+    }
+
+    @Transactional
+    public void cancelBookingAsAdmin(Long bookingId) {
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new IllegalArgumentException("Booking was not found."));
         booking.setStatus(BookingStatus.CANCELLED);
     }
 

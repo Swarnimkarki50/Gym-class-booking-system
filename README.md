@@ -14,8 +14,10 @@ FitReserve is a Spring Boot MVC final project for booking professional gym class
 - Reserve and cancel class bookings
 - Capacity validation and duplicate booking prevention
 - Admin CRUD for gym classes
+- Admin dashboard with class, booking, and user management
+- Admin booking review and cancellation
 - Admin image upload and display
-- Responsive UI with Bootstrap
+- Responsive UI with custom CSS
 - Render deployment blueprint included
 
 ## Tech Stack
@@ -84,17 +86,24 @@ Seed data is created automatically when the app starts.
 | GET    | `/`                           | All   | Home page                  |
 | GET    | `/classes`                    | All   | Browse gym classes         |
 | GET    | `/classes/{id}`               | All   | Class detail page          |
-| POST   | `/classes/{id}/book`          | USER  | Book a class               |
+| POST   | `/bookings`                   | USER  | Book a class               |
 | POST   | `/bookings/{id}/cancel`       | USER  | Cancel a booking           |
-| GET    | `/my-bookings`                | USER  | View user's bookings       |
+| GET    | `/bookings`                   | USER  | View user's bookings       |
+| GET    | `/admin`                      | ADMIN | Admin dashboard            |
 | GET    | `/admin/classes`              | ADMIN | Manage classes             |
 | GET    | `/admin/classes/new`          | ADMIN | Add class form             |
 | POST   | `/admin/classes`              | ADMIN | Save new class             |
 | GET    | `/admin/classes/{id}/edit`    | ADMIN | Edit class form            |
-| PUT    | `/admin/classes/{id}`         | ADMIN | Update class               |
-| DELETE | `/admin/classes/{id}`         | ADMIN | Delete class               |
+| POST   | `/admin/classes`              | ADMIN | Update class               |
+| POST   | `/admin/classes/{id}/delete`  | ADMIN | Delete or hide class       |
+| GET    | `/admin/bookings`             | ADMIN | Manage bookings            |
+| POST   | `/admin/bookings/{id}/cancel` | ADMIN | Cancel any booking         |
+| GET    | `/admin/users`                | ADMIN | Manage users               |
+| POST   | `/admin/users/{id}/delete`    | ADMIN | Delete users without bookings |
 | GET    | `/signup`                     | All   | Registration form          |
 | POST   | `/signup`                     | All   | Register new user          |
+| GET    | `/register`                   | All   | Registration form alias    |
+| POST   | `/register`                   | All   | Register new user alias    |
 | GET    | `/login`                      | All   | Login page                 |
 
 ## Render Deployment

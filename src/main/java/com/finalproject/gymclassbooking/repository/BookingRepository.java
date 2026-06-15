@@ -12,6 +12,10 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     List<Booking> findByUserOrderByCreatedAtDesc(AppUser user);
 
+    List<Booking> findAllByOrderByCreatedAtDesc();
+
+    boolean existsByUser(AppUser user);
+
     boolean existsByGymClass(GymClass gymClass);
 
     long countByGymClassAndStatus(GymClass gymClass, BookingStatus status);

@@ -25,13 +25,13 @@ public class AuthController {
         return "auth/login";
     }
 
-    @GetMapping("/register")
+    @GetMapping({"/register", "/signup"})
     public String registerForm(Model model) {
         model.addAttribute("user", new AppUser());
         return "auth/register";
     }
 
-    @PostMapping("/register")
+    @PostMapping({"/register", "/signup"})
     public String register(
             @Valid @ModelAttribute("user") AppUser user,
             BindingResult bindingResult,
