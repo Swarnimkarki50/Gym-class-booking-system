@@ -18,6 +18,10 @@
             <a th:href="@{/admin/users}">Users</a>
         </nav>
         <div class="admin-sidebar-footer">
+            <span class="nav-user admin-user-chip" th:if="${currentUser != null}">
+                <span class="nav-avatar" th:text="${currentUserInitial}">A</span>
+                <strong th:text="${currentUserName}">Admin</strong>
+            </span>
             <a class="button secondary" th:href="@{/classes}">View Member Site</a>
             <a class="button secondary" th:href="@{/admin/classes}">Cancel</a>
         </div>
@@ -87,7 +91,8 @@
                 <span class="error-text" th:if="${#fields.hasErrors('imagePath')}" th:errors="*{imagePath}"></span>
             </label>
             <img class="current-image" th:if="${gymClass.imagePath != null and !gymClass.imagePath.isBlank()}"
-                 th:src="${gymClass.imagePath}" th:alt="${gymClass.name}">
+                 th:src="${gymClass.imagePath}"
+                 onerror="this.onerror=null;this.src='/images/class-default.png';" th:alt="${gymClass.name}">
             <label>
                 <span>
                     <input type="checkbox" th:field="*{active}">

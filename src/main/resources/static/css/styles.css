@@ -69,20 +69,41 @@ a:hover {
 
 .nav-user {
     align-items: center;
-    background: #eef3f7;
+    background: #ffffff;
     border: 1px solid var(--line);
     border-radius: 6px;
-    color: var(--muted);
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+    color: var(--ink);
     display: inline-flex;
-    font-size: 13px;
+    gap: 8px;
+    font-size: 14px;
     font-weight: 700;
     min-height: 42px;
-    padding: 8px 12px;
+    padding: 6px 12px 6px 6px;
 }
 
 .nav-user strong {
     color: var(--ink);
-    margin-left: 4px;
+}
+
+.nav-avatar {
+    align-items: center;
+    background: var(--brand);
+    border-radius: 50%;
+    color: white;
+    display: inline-flex;
+    font-size: 13px;
+    font-weight: 800;
+    height: 30px;
+    justify-content: center;
+    text-transform: uppercase;
+    width: 30px;
+}
+
+.admin-user-chip {
+    box-shadow: none;
+    justify-content: flex-start;
+    width: 100%;
 }
 
 .main {
@@ -638,6 +659,10 @@ th {
     .admin-sidebar-footer {
         grid-template-columns: 1fr 1fr;
         margin-top: 16px;
+    }
+
+    .admin-user-chip {
+        grid-column: 1 / -1;
     }
 
     .admin-main {
