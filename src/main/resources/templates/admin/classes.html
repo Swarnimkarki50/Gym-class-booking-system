@@ -30,7 +30,7 @@
             <div>
                 <p class="eyebrow">Class catalog</p>
                 <h1>Gym Classes</h1>
-                <p class="meta">Create new sessions and keep every class detail up to date.</p>
+                <p class="meta">Admin can view, edit, and delete any class post created in the website.</p>
             </div>
             <a class="button" th:href="@{/classes/new}">Add New Class</a>
         </div>
@@ -74,7 +74,7 @@
                         <a class="button" th:href="@{/classes/{id}/edit(id=${gymClass.id})}">Edit</a>
                         <form th:action="@{/classes/{id}/delete(id=${gymClass.id})}" method="post">
                             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-                            <button class="danger" type="submit" th:text="${gymClass.active ? 'Delete' : 'Remove'}">Delete</button>
+                            <button class="danger" type="submit">Delete Post</button>
                         </form>
                     </div>
                 </td>

@@ -1,8 +1,11 @@
 package com.finalproject.gymclassbooking.controller;
 
 import com.finalproject.gymclassbooking.model.AppUser;
+import com.finalproject.gymclassbooking.model.Booking;
+import com.finalproject.gymclassbooking.model.BookingStatus;
 import com.finalproject.gymclassbooking.model.GymClass;
 import com.finalproject.gymclassbooking.model.Role;
+import com.finalproject.gymclassbooking.repository.BookingRepository;
 import com.finalproject.gymclassbooking.repository.GymClassRepository;
 import com.finalproject.gymclassbooking.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,10 +45,14 @@ class CriteriaIntegrationTest {
     private GymClassRepository gymClassRepository;
 
     @Autowired
+    private BookingRepository bookingRepository;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @BeforeEach
     void cleanData() {
+        bookingRepository.deleteAll();
         gymClassRepository.deleteAll();
         userRepository.deleteAll();
     }
@@ -154,6 +161,35 @@ class CriteriaIntegrationTest {
                 .andExpect(redirectedUrl("/admin/classes"));
 
         assertThat(gymClassRepository.findById(saved.getId())).isEmpty();
+    }
+
+    @Test
+    void adminCanDeleteClassPostWithExistingBookings() throws Exception {
+        AppUser member = new AppUser();
+        member.setName("Booked Member");
+        member.setEmail("booked@example.com");
+        member.setPassword(passwordEncoder.encode("secret123"));
+        member.setRole(Role.USER);
+        userRepository.save(member);
+
+        GymClass gymClass = gymClass("Boxing Bootcamp", "Alex Stone", "Conditioning class");
+        gymClassRepository.save(gymClass);
+
+        Booking booking = new Booking();
+        booking.setUser(member);
+        booking.setGymClass(gymClass);
+        booking.setTotalPrice(gymClass.getPrice());
+        booking.setStatus(BookingStatus.BOOKED);
+        bookingRepository.save(booking);
+
+        mockMvc.perform(post("/classes/{id}/delete", gymClass.getId())
+                        .with(user("admin@gym.com").roles("ADMIN"))
+                        .with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/admin/classes"));
+
+        assertThat(gymClassRepository.findById(gymClass.getId())).isEmpty();
+        assertThat(bookingRepository.findAll()).isEmpty();
     }
 
     @Test

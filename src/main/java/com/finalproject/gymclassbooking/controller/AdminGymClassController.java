@@ -80,7 +80,7 @@ public class AdminGymClassController {
     @PostMapping({"/admin/classes/{id}/delete", "/classes/{id}/delete"})
     public String deleteClass(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         gymClassService.delete(id);
-        redirectAttributes.addFlashAttribute("success", "Gym class deleted or hidden if it already had bookings.");
+        redirectAttributes.addFlashAttribute("success", "Class post deleted successfully.");
         return "redirect:/admin/classes";
     }
 }

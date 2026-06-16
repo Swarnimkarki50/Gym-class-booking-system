@@ -67,6 +67,24 @@ a:hover {
     margin: 0;
 }
 
+.nav-user {
+    align-items: center;
+    background: #eef3f7;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    color: var(--muted);
+    display: inline-flex;
+    font-size: 13px;
+    font-weight: 700;
+    min-height: 42px;
+    padding: 8px 12px;
+}
+
+.nav-user strong {
+    color: var(--ink);
+    margin-left: 4px;
+}
+
 .main {
     margin: 0 auto;
     max-width: 1120px;

@@ -44,11 +44,7 @@ public class GymClassService {
     @Transactional
     public void delete(Long id) {
         GymClass gymClass = getClass(id);
-        if (bookingRepository.existsByGymClass(gymClass)) {
-            gymClass.setActive(false);
-            gymClassRepository.save(gymClass);
-            return;
-        }
+        bookingRepository.deleteByGymClass(gymClass);
         gymClassRepository.delete(gymClass);
     }
 }

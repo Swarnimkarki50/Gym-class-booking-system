@@ -18,6 +18,8 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     boolean existsByGymClass(GymClass gymClass);
 
+    void deleteByGymClass(GymClass gymClass);
+
     long countByGymClassAndStatus(GymClass gymClass, BookingStatus status);
 
     boolean existsByUserAndGymClassAndStatus(AppUser user, GymClass gymClass, BookingStatus status);
